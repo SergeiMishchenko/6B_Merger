@@ -3,10 +3,12 @@
   as described in README.md
  */
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Merger {
 
     ArrayList<String> usersData;
+	ArrayList<String> copyData = new ArrayList<String>();
 
     /**
       Construct an instance from a list of data
@@ -14,6 +16,10 @@ public class Merger {
      */
     public Merger( ArrayList<String> list) {
         usersData = list;
+		//creates a copy of usersData 
+		for (int i = 0; i < usersData.size(); i ++){
+			copyData.add(usersData.get(i));
+		}
     }
 
 
@@ -28,8 +34,28 @@ public class Merger {
       , int nItems  // number of items in the merged list
                     // = just past end of list1
       ) {
-    }
-
+		  int n1 = start0;
+		  int n2 = start1;
+		  for (int currentI = start0 ; currentI < nItems ; currentI++){
+			  if (n1 == start1){
+				  usersData.set(currentI, copyData.get(n2));
+				  n2++;
+			  }
+			  else if (n2 == nItems){
+				  usersData.set(currentI, copyData.get(n1));
+				  n1++;
+			  }
+			  else if (copyData.get(n1).compareTo(copyData.get(n2)) < 0){
+				  usersData.set(currentI, copyData.get(n1));
+				  n1++;
+			  }
+			  else{
+				  usersData.set(currentI, copyData.get(n2));
+				  n2++;
+			  }
+		  }
+	  }
+    
 
     /**
       @return a string representation of the user's data
@@ -48,7 +74,10 @@ public class Merger {
            ; i < endBefore -1 // stop early, because comparing to next
            ; i++
            )
-            if( usersData.get(i).compareTo( usersData.get(i+1)) > 0) return false;
+            if( usersData.get(i).compareTo( usersData.get(i+1)) > 0){
+				System.out.println (usersData.get(i));
+				return false;
+			}
         return true;
     }
 }
